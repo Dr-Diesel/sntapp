@@ -14,6 +14,8 @@ final class DeviceResDto
 
 	public string $serialNumber;
 
+	public string $deviceType;
+
 	public ?DateTimeInterface $updatedAt = null;
 
 	public ?DateTimeInterface $createdAt = null;
@@ -24,6 +26,7 @@ final class DeviceResDto
 		$self->id = $device->getId();
 		$self->name = $device->getName();
 		$self->serialNumber = $device->getSerialNumber();
+		$self->deviceType = $device->getDeviceType();
 		$self->updatedAt = $device->getUpdatedAt();
 		$self->createdAt = $device->getCreatedAt();
 

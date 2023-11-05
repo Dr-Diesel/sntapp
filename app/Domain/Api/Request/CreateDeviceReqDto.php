@@ -13,4 +13,7 @@ final class CreateDeviceReqDto
 	/** @Assert\NotBlank */
 	public string $serialNumber;
 
+	/** @Assert\NotBlank */
+	public string $deviceType;
+
 }

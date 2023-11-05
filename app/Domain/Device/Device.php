@@ -6,6 +6,7 @@ use App\Model\Database\Entity\AbstractEntity;
 use App\Model\Database\Entity\TCreatedAt;
 use App\Model\Database\Entity\TId;
 use App\Model\Database\Entity\TUpdatedAt;
+use App\Model\Exception\Logic\InvalidArgumentException;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,8 +21,11 @@ class Device extends AbstractEntity
 	use TCreatedAt;
 	use TUpdatedAt;
 
-	public const DEVICE_MOWER = 'mower';
-	public const DEVICE_CORRECTION_STATION = 'correction station';
+	public const DEVICE_TYPE_MOWER = 'mower';
+
+	public const DEVICE_TYPE_CORRECTION_STATION = 'correction station';
+
+	public const DEVICE_TYPES = [self::DEVICE_TYPE_MOWER, self::DEVICE_TYPE_CORRECTION_STATION];
 
 	/** @ORM\Column(type="string", length=255, nullable=FALSE, unique=false) */
 	private string $name;
@@ -31,7 +35,7 @@ class Device extends AbstractEntity
 
 	/** @ORM\Column(type="string", length=255, nullable=TRUE, unique=false, columnDefinition="enum('mower','correction station')")
 	 */
-	private string $type;
+	private string $deviceType;
 
 	public function __construct(string $name, string $serialNumber)
 	{
@@ -49,28 +53,36 @@ class Device extends AbstractEntity
 		return $this->serialNumber;
 	}
 
-	public function rename(string $name, string $surname): void
-	{
-		$this->name = $name;
-		$this->serialNumber = $surname;
-	}
-
 	/**
 	 * @return string
 	 */
-	public function getType(): string {
-		return $this->type;
+	public function getDeviceType(): string {
+		return $this->deviceType;
 	}
 
 	/**
-	 * @param string $type
+	 * @param string $deviceType
 	 */
-	public function setType(string $type): void {
-		$this->type = $type;
+	public function setDeviceType(string $deviceType): void {
+		if (!in_array($deviceType, self::DEVICE_TYPES, true)) {
+			throw new InvalidArgumentException(sprintf('Unsupported deviceType "%s"', $deviceType));
+		}
+
+		$this->deviceType = $deviceType;
 	}
 
-}
+	/**
+	 * @param string $name
+	 */
+	public function setName(string $name): void {
+		$this->name = $name;
+	}
 
-enum DeviceType: string {
+	/**
+	 * @param string $serialNumber
+	 */
+	public function setSerialNumber(string $serialNumber): void {
+		$this->serialNumber = $serialNumber;
+	}
 
 }

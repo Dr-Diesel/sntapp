@@ -11,6 +11,7 @@ use App\Domain\Api\Facade\DevicesFacade;
 use App\Domain\Api\Request\CreateDeviceReqDto;
 use App\Domain\Api\Response\DeviceResDto;
 use App\Domain\Api\Response\UserResDto;
+use App\Model\Exception\Logic\InvalidArgumentException;
 use App\Model\Exception\Runtime\Database\EntityNotFoundException;
 use App\Model\Utils\Caster;
 use Doctrine\DBAL\Exception\DriverException;
@@ -85,10 +86,23 @@ class DevicesController extends BaseV1Controller
 		$dto = $request->getParsedBody();
 
 		try {
+			$this->devicesFacade->validateDto($dto);
+		} catch (InvalidArgumentException $e) {
+			throw ClientErrorException::create()
+				->withMessage('Invalid request: '.$e->getMessage())
+				->withCode(IResponse::S400_BadRequest);
+		}
+
+		try {
 			$this->devicesFacade->create($dto);
 
 			return $response->withStatus(IResponse::S201_Created)
 				->withHeader('Content-Type', 'application/json');
+
+		} catch (InvalidArgumentException $e) {
+			throw ClientErrorException::create()
+				->withMessage('Invalid request: '.$e->getMessage())
+				->withCode(IResponse::S400_BadRequest);
 		} catch (DriverException $e) {
 			throw ServerErrorException::create()
 				->withMessage('Cannot create device ['.$e->getCode().']')
@@ -106,22 +120,32 @@ class DevicesController extends BaseV1Controller
 	 */
 	public function update(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
-		try {
-			$this->devicesFacade->findOne(Caster::toInt($request->getParameter('id')));
-		} catch (EntityNotFoundException $e) {
-			throw ClientErrorException::create()
-				->withMessage('Device not found')
-				->withCode(IResponse::S404_NotFound);
-		}
+		$id = Caster::toInt($request->getParameter('id'));
 
 		/** @var CreateDeviceReqDto $dto */
 		$dto = $request->getParsedBody();
 
-		try {
-			$this->devicesFacade->update($dto);
 
+		try {
+			$this->devicesFacade->validateDto($dto);
+		} catch (InvalidArgumentException $e) {
+			throw ClientErrorException::create()
+				->withMessage('Invalid request: '.$e->getMessage())
+				->withCode(IResponse::S400_BadRequest);
+		}
+
+		try {
+			$this->devicesFacade->update($id, $dto);
 			return $response->withStatus(IResponse::S200_OK)
 				->withHeader('Content-Type', 'application/json');
+		} catch (EntityNotFoundException $e) {
+			throw ClientErrorException::create()
+				->withMessage('Device not found')
+				->withCode(IResponse::S404_NotFound);
+		} catch (InvalidArgumentException $e) {
+			throw ClientErrorException::create()
+				->withMessage('Invalid request: '.$e->getMessage())
+				->withCode(IResponse::S400_BadRequest);
 		} catch (DriverException $e) {
 			throw ServerErrorException::create()
 				->withMessage('Cannot update device ['.$e->getCode().']')
