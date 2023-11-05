@@ -115,11 +115,11 @@ final class DevicesFacade
 	 */
 	public function validateDto(CreateDeviceReqDto $dto): bool
 	{
-		if (empty($dto->name))
+		if (in_array($dto->name ?? '', [0, ''], true))
 			throw new InvalidArgumentException('Missing attribute "name"');
-		if (empty($dto->serialNumber))
+		if (in_array($dto->serialNumber ?? '', [0, ''], true))
 			throw new InvalidArgumentException('Missing attribute "serialNumber"');
-		if (empty($dto->deviceType))
+		if (in_array($dto->deviceType ?? '', [0, ''], true))
 			throw new InvalidArgumentException('Missing attribute "deviceType"');
 
 		return true;

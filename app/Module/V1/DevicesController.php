@@ -41,7 +41,7 @@ class DevicesController extends BaseV1Controller
 	 * 		@Apitte\RequestParameter(name="limit", type="int", in="query", required=false, description="Data limit"),
 	 * 		@Apitte\RequestParameter(name="offset", type="int", in="query", required=false, description="Data offset")
 	 * })
-	 * @return UserResDto[]
+	 * @return DeviceResDto[]
 	 */
 	public function index(ApiRequest $request): array
 	{
