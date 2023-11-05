@@ -13,8 +13,8 @@ services:
     depends_on:
       - php
     ports:
-      - "80:80"
-      - "443:443"
+      - "4444:80"
+      - "4443:443"
   php:
     build:
       context: .
@@ -41,9 +41,9 @@ services:
     volumes:
       - .docker/data/mysql:/var/lib/mysql
     ports:
-      - 3306:3306
+      - 4446:3306
 
   adminer:
     image: dockette/adminer:dg
     ports:
-      - 8080:80
+      - 4445:80
