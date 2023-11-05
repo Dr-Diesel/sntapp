@@ -31,6 +31,8 @@ nettrine.dbal:
 		dbname: %database.dbname%
 		port: %database.port%
 		serverVersion: %database.serverVersion%
+		typesMapping:
+			enum: string
 
 nettrine.orm:
 	entityManagerDecoratorClass: App\Model\Database\EntityManagerDecorator
