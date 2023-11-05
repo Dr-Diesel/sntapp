@@ -19,8 +19,8 @@ services:
     build:
       context: .
       dockerfile: ./.docker/php/Dockerfile
-    volumes:
-      - ./:/var/www/html:cached
+    #volumes:
+    #  - ./:/var/www/html:cached
     depends_on:
       - mariadb
     environment:
@@ -30,6 +30,7 @@ services:
       STARTUP_COMMAND_1: composer install
       STARTUP_COMMAND_2: NETTE_DEBUG=1 php bin/console migrations:migrate --no-interaction
       STARTUP_COMMAND_3: NETTE_DEBUG=1 php bin/console doctrine:fixtures:load --no-interaction
+    tty: true
 
   mariadb:
     image: mariadb:10.4
@@ -38,8 +39,6 @@ services:
       - MARIADB_PASSWORD=contributte
       - MARIADB_USER=contributte
       - MARIADB_DATABASE=contributte
-    volumes:
-      - .docker/data/mysql:/var/lib/mysql
     ports:
       - 4446:3306
 
@@ -47,3 +46,6 @@ services:
     image: dockette/adminer:dg
     ports:
       - 4445:80
+    environment:
+      WORKERS: 1
+      PHP_CLI_SERVER_WORKERS: 1
