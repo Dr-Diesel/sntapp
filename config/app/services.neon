@@ -3,6 +3,7 @@
 services:
 	# Domain =================
 	- App\Domain\Api\Facade\UsersFacade
+	- App\Domain\Api\Facade\DevicesFacade
 
 	## Serialize =============
 	symfony.serializer.serializer:
