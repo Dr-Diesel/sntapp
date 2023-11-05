@@ -31,10 +31,15 @@ class OpenApiController extends BasePubV1Controller
 	 */
 	public function meta(ApiRequest $request, ApiResponse $response): ResponseInterface
 	{
+		$schema = $this->schemaBuilder->build()->toArray();
+
+		$schema['components'] = ['securitySchemes'=>['AccessToken'=>['type'=>'apiKey','in'=>'query','name'=>'_access_token']]];
+		$schema['security'] = [['AccessToken' => []]];
+
 		return $response
 			->withAddedHeader('Access-Control-Allow-Origin', '*')
 			->writeJsonBody(
-				$this->schemaBuilder->build()->toArray()
+				$schema
 			);
 	}
 
