@@ -74,7 +74,7 @@ class DevicesController extends BaseV1Controller
 
 	/**
 	 * @Apitte\OpenApi("
-	 *   summary: Create new user.
+	 *   summary: Create new device.
 	 * ")
 	 * @Apitte\Path("/")
 	 * @Apitte\Method("PUT")
@@ -112,7 +112,7 @@ class DevicesController extends BaseV1Controller
 
 	/**
 	 * @Apitte\OpenApi("
-	 *   summary: Create new user.
+	 *   summary: Update device.
 	 * ")
 	 * @Apitte\Path("/{id}")
 	 * @Apitte\Method("POST")
@@ -150,6 +150,28 @@ class DevicesController extends BaseV1Controller
 			throw ServerErrorException::create()
 				->withMessage('Cannot update device ['.$e->getCode().']')
 				->withPrevious($e);
+		}
+	}
+
+	/**
+	 * @Apitte\OpenApi("
+	 *   summary: Delete device.
+	 * ")
+	 * @Apitte\Path("/{id}")
+	 * @Apitte\Method("DELETE")
+	 */
+	public function delete(ApiRequest $request, ApiResponse $response): ApiResponse
+	{
+		$id = Caster::toInt($request->getParameter('id'));
+
+		try {
+			$this->devicesFacade->delete($id);
+			return $response->withStatus(IResponse::S200_OK)
+				->withHeader('Content-Type', 'application/json');
+		} catch (EntityNotFoundException $e) {
+			throw ClientErrorException::create()
+				->withMessage('Device not found')
+				->withCode(IResponse::S404_NotFound);
 		}
 	}
 

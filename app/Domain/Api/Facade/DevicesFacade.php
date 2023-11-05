@@ -61,6 +61,10 @@ final class DevicesFacade
 		return $this->findOneBy(['id' => $id]);
 	}
 
+	/**
+	 * @param CreateDeviceReqDto $dto
+	 * @return Device
+	 */
 	public function create(CreateDeviceReqDto $dto): Device
 	{
 		$device = new Device(
@@ -79,6 +83,11 @@ final class DevicesFacade
 		return $device;
 	}
 
+	/**
+	 * @param int $id
+	 * @param CreateDeviceReqDto $dto
+	 * @return Device
+	 */
 	public function update(int $id, CreateDeviceReqDto $dto): Device
 	{
 		$device = $this->em->getRepository(Device::class)->findOneBy(['id' => $id]);
@@ -96,6 +105,17 @@ final class DevicesFacade
 		$this->em->flush($device);
 
 		return $device;
+	}
+
+	public function delete(int $id) {
+		$device = $this->em->getRepository(Device::class)->findOneBy(['id' => $id]);
+
+		if ($device === null) {
+			throw new EntityNotFoundException();
+		}
+
+		$this->em->remove($device);
+		$this->em->flush();
 	}
 
 	/**
