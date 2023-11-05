@@ -35,10 +35,10 @@ services:
   mariadb:
     image: mariadb:10.4
     environment:
-      - MARIADB_ROOT_PASSWORD=contributte
-      - MARIADB_PASSWORD=contributte
-      - MARIADB_USER=contributte
-      - MARIADB_DATABASE=contributte
+      - MARIADB_ROOT_PASSWORD=sntroot
+      - MARIADB_PASSWORD=sntpwd
+      - MARIADB_USER=sntuser
+      - MARIADB_DATABASE=sntdb
     ports:
       - 4446:3306
 
