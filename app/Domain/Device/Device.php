@@ -33,8 +33,7 @@ class Device extends AbstractEntity
 	/** @ORM\Column(type="string", length=255, nullable=FALSE, unique=false) */
 	private string $serialNumber;
 
-	/** @ORM\Column(type="string", length=255, nullable=TRUE, unique=false, columnDefinition="enum('mower','correction station')")
-	 */
+	/** @ORM\Column(type="string", length=255, nullable=TRUE, unique=false, columnDefinition="enum('mower','correction station')") */
 	private string $deviceType;
 
 	public function __construct(string $name, string $serialNumber)
@@ -53,17 +52,13 @@ class Device extends AbstractEntity
 		return $this->serialNumber;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getDeviceType(): string {
+	public function getDeviceType(): string
+	{
 		return $this->deviceType;
 	}
 
-	/**
-	 * @param string $deviceType
-	 */
-	public function setDeviceType(string $deviceType): void {
+	public function setDeviceType(string $deviceType): void
+	{
 		if (!in_array($deviceType, self::DEVICE_TYPES, true)) {
 			throw new InvalidArgumentException(sprintf('Unsupported deviceType "%s"', $deviceType));
 		}
@@ -71,17 +66,13 @@ class Device extends AbstractEntity
 		$this->deviceType = $deviceType;
 	}
 
-	/**
-	 * @param string $name
-	 */
-	public function setName(string $name): void {
+	public function setName(string $name): void
+	{
 		$this->name = $name;
 	}
 
-	/**
-	 * @param string $serialNumber
-	 */
-	public function setSerialNumber(string $serialNumber): void {
+	public function setSerialNumber(string $serialNumber): void
+	{
 		$this->serialNumber = $serialNumber;
 	}
 

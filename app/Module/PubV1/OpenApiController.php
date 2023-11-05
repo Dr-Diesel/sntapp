@@ -33,7 +33,7 @@ class OpenApiController extends BasePubV1Controller
 	{
 		$schema = $this->schemaBuilder->build()->toArray();
 
-		$schema['components'] = ['securitySchemes'=>['AccessToken'=>['type'=>'apiKey','in'=>'query','name'=>'_access_token']]];
+		$schema['components'] = ['securitySchemes' => ['AccessToken' => ['type' => 'apiKey', 'in' => 'query', 'name' => '_access_token']]];
 		$schema['security'] = [['AccessToken' => []]];
 
 		return $response

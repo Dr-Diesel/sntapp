@@ -89,7 +89,7 @@ class DevicesController extends BaseV1Controller
 			$this->devicesFacade->validateDto($dto);
 		} catch (InvalidArgumentException $e) {
 			throw ClientErrorException::create()
-				->withMessage('Invalid request: '.$e->getMessage())
+				->withMessage('Invalid request: ' . $e->getMessage())
 				->withCode(IResponse::S400_BadRequest);
 		}
 
@@ -98,14 +98,13 @@ class DevicesController extends BaseV1Controller
 
 			return $response->withStatus(IResponse::S201_Created)
 				->withHeader('Content-Type', 'application/json');
-
 		} catch (InvalidArgumentException $e) {
 			throw ClientErrorException::create()
-				->withMessage('Invalid request: '.$e->getMessage())
+				->withMessage('Invalid request: ' . $e->getMessage())
 				->withCode(IResponse::S400_BadRequest);
 		} catch (DriverException $e) {
 			throw ServerErrorException::create()
-				->withMessage('Cannot create device ['.$e->getCode().']')
+				->withMessage('Cannot create device [' . $e->getCode() . ']')
 				->withPrevious($e);
 		}
 	}
@@ -125,17 +124,17 @@ class DevicesController extends BaseV1Controller
 		/** @var CreateDeviceReqDto $dto */
 		$dto = $request->getParsedBody();
 
-
 		try {
 			$this->devicesFacade->validateDto($dto);
 		} catch (InvalidArgumentException $e) {
 			throw ClientErrorException::create()
-				->withMessage('Invalid request: '.$e->getMessage())
+				->withMessage('Invalid request: ' . $e->getMessage())
 				->withCode(IResponse::S400_BadRequest);
 		}
 
 		try {
 			$this->devicesFacade->update($id, $dto);
+
 			return $response->withStatus(IResponse::S200_OK)
 				->withHeader('Content-Type', 'application/json');
 		} catch (EntityNotFoundException $e) {
@@ -144,11 +143,11 @@ class DevicesController extends BaseV1Controller
 				->withCode(IResponse::S404_NotFound);
 		} catch (InvalidArgumentException $e) {
 			throw ClientErrorException::create()
-				->withMessage('Invalid request: '.$e->getMessage())
+				->withMessage('Invalid request: ' . $e->getMessage())
 				->withCode(IResponse::S400_BadRequest);
 		} catch (DriverException $e) {
 			throw ServerErrorException::create()
-				->withMessage('Cannot update device ['.$e->getCode().']')
+				->withMessage('Cannot update device [' . $e->getCode() . ']')
 				->withPrevious($e);
 		}
 	}
@@ -166,6 +165,7 @@ class DevicesController extends BaseV1Controller
 
 		try {
 			$this->devicesFacade->delete($id);
+
 			return $response->withStatus(IResponse::S200_OK)
 				->withHeader('Content-Type', 'application/json');
 		} catch (EntityNotFoundException $e) {

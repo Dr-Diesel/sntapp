@@ -61,10 +61,6 @@ final class DevicesFacade
 		return $this->findOneBy(['id' => $id]);
 	}
 
-	/**
-	 * @param CreateDeviceReqDto $dto
-	 * @return Device
-	 */
 	public function create(CreateDeviceReqDto $dto): Device
 	{
 		$device = new Device(
@@ -83,11 +79,6 @@ final class DevicesFacade
 		return $device;
 	}
 
-	/**
-	 * @param int $id
-	 * @param CreateDeviceReqDto $dto
-	 * @return Device
-	 */
 	public function update(int $id, CreateDeviceReqDto $dto): Device
 	{
 		$device = $this->em->getRepository(Device::class)->findOneBy(['id' => $id]);
@@ -107,7 +98,8 @@ final class DevicesFacade
 		return $device;
 	}
 
-	public function delete(int $id) {
+	public function delete(int $id): void
+	{
 		$device = $this->em->getRepository(Device::class)->findOneBy(['id' => $id]);
 
 		if ($device === null) {
@@ -119,11 +111,10 @@ final class DevicesFacade
 	}
 
 	/**
-	 * @param CreateDeviceReqDto $dto
-	 * @return bool
 	 * @throws InvalidArgumentException
 	 */
-	public function validateDto(CreateDeviceReqDto $dto) {
+	public function validateDto(CreateDeviceReqDto $dto): bool
+	{
 		if (empty($dto->name))
 			throw new InvalidArgumentException('Missing attribute "name"');
 		if (empty($dto->serialNumber))
@@ -132,7 +123,6 @@ final class DevicesFacade
 			throw new InvalidArgumentException('Missing attribute "deviceType"');
 
 		return true;
-
 	}
 
 }
