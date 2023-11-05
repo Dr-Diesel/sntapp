@@ -43,7 +43,11 @@ class Bootstrap
 			$configurator->addConfig(__DIR__ . '/../config/env/prod.neon');
 		}
 
-		$configurator->addConfig(__DIR__ . '/../config/local.neon');
+		if (str_contains(PHP_OS, 'WINNT')) {
+			$configurator->addConfig(__DIR__ . '/../config/local.win.neon');
+		} else {
+			$configurator->addConfig(__DIR__ . '/../config/local.neon');
+		}
 
 		return $configurator;
 	}
