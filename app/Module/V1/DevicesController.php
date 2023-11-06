@@ -10,7 +10,6 @@ use Apitte\Core\Http\ApiResponse;
 use App\Domain\Api\Facade\DevicesFacade;
 use App\Domain\Api\Request\CreateDeviceReqDto;
 use App\Domain\Api\Response\DeviceResDto;
-use App\Domain\Api\Response\UserResDto;
 use App\Model\Exception\Logic\InvalidArgumentException;
 use App\Model\Exception\Runtime\Database\EntityNotFoundException;
 use App\Model\Utils\Caster;
